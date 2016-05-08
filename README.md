@@ -1,4 +1,3 @@
-# reactjs-reversi
-A reversi (Othello) implementation in ReactJS
+# reversi mcts
+A Monte Carlo Tree Search implementation for reversi 
 
-You can play the game <a href="https://kentan.github.io/reversi/index.html">here</a>
