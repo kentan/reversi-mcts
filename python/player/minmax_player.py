@@ -6,7 +6,7 @@ import copy
 import time
 
 class MinMaxTree:
-    SEARCH_DEAPTH = 7
+    SEARCH_DEPTH = 7
     def __init__(self,state_,depth,parent):
         self.children = {}
         self.best_child = None
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     t = MinMaxTree(s,0,None)
 
     start = time.time()
-    t.dfs_evaluate(MinMaxTree.SEARCH_DEAPTH)
+    t.dfs_evaluate(MinMaxTree.SEARCH_DEPTH)
     # t.pretty_print()
 
     end = time.time()

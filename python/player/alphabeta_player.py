@@ -6,7 +6,7 @@ import copy
 import time
 
 class AlphaBetaTree(minmax_player.MinMaxTree):
-    SEARCH_DEAPTH = 4
+    SEARCH_DEPTH = 4
 
     def __init__(self, state_, depth, parent,alpha,beta):
         super().__init__(state_,depth,parent)
@@ -117,7 +117,7 @@ s = State(b)
 t = AlphaBetaTree(s, 0, None,-1,100)
 
 start = time.time()
-t.dfs_evaluate(AlphaBetaTree.SEARCH_DEAPTH)
+t.dfs_evaluate(AlphaBetaTree.SEARCH_DEPTH)
 # t.pretty_print()
 
 end = time.time()
