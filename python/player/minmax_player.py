@@ -1,0 +1,114 @@
+
+from state import State
+from board import Board
+from board import BoardUtil
+import copy
+import time
+
+class MinMaxTree:
+    SEARCH_DEAPTH = 7
+    def __init__(self,state_,depth,parent):
+        self.children = {}
+        self.best_child = None
+        self.best_action = - 1
+        self.v = 0
+        self.alpha = -1
+        self.beta = 100
+        self.prone = False
+        self.state = state_
+        self.depth = depth
+        self.parent = parent
+
+
+
+    def evaluate(self):
+        self.v = self.value()
+
+    def is_maxnode(self):
+        return self.state.board.current_player == 1
+
+    def pick_best(self):
+        try:
+            if self.is_maxnode():
+                k = max(self.children, key=self.children.get)
+            else:
+                k = min(self.children, key=self.children.get)
+        except ValueError as e:
+            self.pretty_print()
+
+        return k, self.children[k]
+
+    def update(self):
+        self.v = self.best_child.v
+
+    def dfs_evaluate(self,depth):
+        if depth == 0 or self.depth == 60:
+            self.evaluate()
+
+        else:
+            # max = 0
+            self.expand()
+
+            for action,child in self.children.items():
+                child.dfs_evaluate(depth - 1)
+
+            self.best_action,self.best_child = self.pick_best()
+            self.update()
+            # return self.best_child.v
+
+
+    def expand(self):
+        actions = self.state.board.puttable_tiles()
+        if len(actions) == 0:
+            actions.put(-1)
+            self.passed = True
+            if self.parent.passed:
+                self.game_end = True
+            if self.state.board.get_num_of_yourtile() == 0:
+                self.game_end = True
+
+        # print(str(actions))
+        max_value = 0
+        for action in actions:
+            s = State(copy.deepcopy(self.state.board))
+            s.board.put(action)
+            t = MinMaxTree(s,self.depth + 1,self)
+            self.children[action] = t
+
+
+
+    def value(self):
+        return bin(self.state.board.boards[1]).count("1")
+
+    # for max function
+    def __lt__(self,other):
+        return self.v < other.v
+
+    def pretty_print(self):
+        indent = '>' * self.depth
+        min_max = "o" if self.is_maxnode() else "x"
+        print(min_max + ":" + str(self.v) + ":")
+
+        self.state.board.show_board(indent)
+
+
+        for child in self.children.values():
+            child.pretty_print()
+
+
+if __name__ == "__main__":
+    b = Board()
+    s = State(b)
+    t = MinMaxTree(s,0,None)
+
+    start = time.time()
+    t.dfs_evaluate(MinMaxTree.SEARCH_DEAPTH)
+    # t.pretty_print()
+
+    end = time.time()
+
+    print(end - start)
+
+
+
+
