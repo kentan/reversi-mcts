@@ -79,7 +79,7 @@ class MinMaxTree:
             self.passed = True
             if self.parent.passed:
                 self.game_end = True
-            
+
 
         # print(str(actions))
         max_value = 0

@@ -16,7 +16,7 @@ def setup():
 
 def play_game():
     player1 = player.mcts_player.MCTSPlayer(root)
-    #player2 = player.random_player.RandomPlayer()
+    #player1 = player.random_player.RandomPlayer()
     player2 = player.minmax_player.MinMaxPlayer()
     b = board.Board()
 
@@ -38,7 +38,6 @@ def play_game():
                     passed = True
                     print("passed")
                     continue
-            print("HHH" + str(a2))
             b.put(a2)
             #b.show_board()
             a = a2
@@ -52,7 +51,7 @@ def play_game():
 
 def main():
     setup()
-    for i in range(30):
+    for i in range(10):
         play_game()
 
     print(result)

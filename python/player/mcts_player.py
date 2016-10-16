@@ -38,7 +38,7 @@ class MCTSPlayer:
         self.board_before = copy.deepcopy(board_)
         self.board_before.put(action)
 
-        self.board_before.show_board()
+        # self.board_before.show_board()
         return action
 
 
