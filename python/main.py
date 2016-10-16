@@ -1,6 +1,7 @@
 import board
 import player.mcts_player
 import player.random_player
+import player.minmax_player
 import pickle
 import treenode
 import copy
@@ -15,20 +16,35 @@ def setup():
 
 def play_game():
     player1 = player.mcts_player.MCTSPlayer(root)
-    player2 = player.random_player.RandomPlayer()
+    #player2 = player.random_player.RandomPlayer()
+    player2 = player.minmax_player.MinMaxPlayer()
     b = board.Board()
 
 
     a = None
     end = False
+    passed = False
     while not end:
         for p in (player1,player2):
-            a = p.action(b,a)
-            b.put(a)
+            if end: break
+            a2 = p.action(b,a)
+
+            if a2 == -1:
+                if passed:
+                    end = True
+                    print("passed2")
+                    break
+                else:
+                    passed = True
+                    print("passed")
+                    continue
+            print("HHH" + str(a2))
+            b.put(a2)
             #b.show_board()
-            if b.is_end():
-                end = True
-                break
+            a = a2
+            if b.is_end(): end = True
+
+
 
     b.show_board()
     result[b.get_wining_player()] += 1

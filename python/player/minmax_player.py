@@ -8,16 +8,16 @@ import time
 class MinMaxPlayer:
 
     def action(self, board_,opponent_action):
-        state_before = State(self.board_before)
+        state_before = State(copy.deepcopy(board_))
         min_max_tree = MinMaxTree(state_before,0,None)
         min_max_tree.dfs_evaluate()
-        action = min_max_tree.best_child
+        action = min_max_tree.best_action
 
         return action
 
 
 class MinMaxTree:
-    SEARCH_DEPTH = 7
+    SEARCH_DEPTH = 3
     def __init__(self,state_,depth,parent):
         self.children = {}
         self.best_child = None
@@ -29,6 +29,8 @@ class MinMaxTree:
         self.state = state_
         self.depth = depth
         self.parent = parent
+        self.passed = False
+
 
 
 
@@ -52,7 +54,7 @@ class MinMaxTree:
     def update(self):
         self.v = self.best_child.v
 
-    def dfs_evaluate(self,depth=MinMaxTree.SEARCH_DEPTH):
+    def dfs_evaluate(self,depth=SEARCH_DEPTH):
         if depth == 0 or self.depth == 60:
             self.evaluate()
 
@@ -71,12 +73,13 @@ class MinMaxTree:
     def expand(self):
         actions = self.state.board.puttable_tiles()
         if len(actions) == 0:
-            actions.put(-1)
+            s = State(copy.deepcopy(self.state.board))
+            t = MinMaxTree(s,self.depth + 1,self)
+            self.children[-1] = t
             self.passed = True
             if self.parent.passed:
                 self.game_end = True
-            if self.state.board.get_num_of_yourtile() == 0:
-                self.game_end = True
+            
 
         # print(str(actions))
         max_value = 0
