@@ -38,7 +38,8 @@ class MinMaxTree:
         self.v = self.value()
 
     def is_maxnode(self):
-        return self.state.board.current_player == 1
+        # return self.state.board.current_player == 1
+        return self.depth % 2 == 0
 
     def pick_best(self):
         try:
