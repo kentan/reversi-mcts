@@ -5,6 +5,17 @@ from board import BoardUtil
 import copy
 import time
 
+class MinMaxPlayer:
+
+    def action(self, board_,opponent_action):
+        state_before = State(self.board_before)
+        min_max_tree = MinMaxTree(state_before,0,None)
+        min_max_tree.dfs_evaluate()
+        action = min_max_tree.best_child
+
+        return action
+
+
 class MinMaxTree:
     SEARCH_DEPTH = 7
     def __init__(self,state_,depth,parent):
@@ -41,7 +52,7 @@ class MinMaxTree:
     def update(self):
         self.v = self.best_child.v
 
-    def dfs_evaluate(self,depth):
+    def dfs_evaluate(self,depth=MinMaxTree.SEARCH_DEPTH):
         if depth == 0 or self.depth == 60:
             self.evaluate()
 
@@ -108,7 +119,3 @@ if __name__ == "__main__":
     end = time.time()
 
     print(end - start)
-
-
-
-

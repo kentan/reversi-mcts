@@ -6,8 +6,10 @@ import treenode
 import copy
 
 result = {"player1": 0, "player2": 0, "draw": 0}
+root = None
 
 def setup():
+    global root
     root = pickle.load(open("./trainer/data.pickle", "rb"))
     treenode.Node.total_visits = root.total_visits_for_pickling
 
