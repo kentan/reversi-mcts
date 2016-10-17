@@ -6,10 +6,12 @@ import copy
 import time
 
 class MinMaxPlayer:
+    def __init__(self,player_id):
+        self.fist = (player_id == 0)
 
     def action(self, board_,opponent_action):
         state_before = State(copy.deepcopy(board_))
-        min_max_tree = MinMaxTree(state_before,0,None)
+        min_max_tree = MinMaxTree(state_before,0,None,self.fist)
         min_max_tree.dfs_evaluate()
         action = min_max_tree.best_action
 
@@ -18,7 +20,7 @@ class MinMaxPlayer:
 
 class MinMaxTree:
     SEARCH_DEPTH = 3
-    def __init__(self,state_,depth,parent):
+    def __init__(self,state_,depth,parent,first):
         self.children = {}
         self.best_child = None
         self.best_action = - 1
@@ -30,6 +32,7 @@ class MinMaxTree:
         self.depth = depth
         self.parent = parent
         self.passed = False
+        self.first = first
 
 
 
@@ -38,8 +41,8 @@ class MinMaxTree:
         self.v = self.value()
 
     def is_maxnode(self):
-        # return self.state.board.current_player == 1
         return self.depth % 2 == 0
+
 
     def pick_best(self):
         try:
@@ -75,7 +78,7 @@ class MinMaxTree:
         actions = self.state.board.puttable_tiles()
         if len(actions) == 0:
             s = State(copy.deepcopy(self.state.board))
-            t = MinMaxTree(s,self.depth + 1,self)
+            t = MinMaxTree(s,self.depth + 1,self,self.first)
             self.children[-1] = t
             self.passed = True
             if self.parent.passed:
@@ -87,13 +90,14 @@ class MinMaxTree:
         for action in actions:
             s = State(copy.deepcopy(self.state.board))
             s.board.put(action)
-            t = MinMaxTree(s,self.depth + 1,self)
+            t = MinMaxTree(s,self.depth + 1,self,self.first)
             self.children[action] = t
 
 
 
     def value(self):
-        return bin(self.state.board.boards[1]).count("1")
+        player_id = 1 if self.first else -1
+        return bin(self.state.board.boards[player_id]).count("1")
 
     # for max function
     def __lt__(self,other):
@@ -114,7 +118,7 @@ class MinMaxTree:
 if __name__ == "__main__":
     b = Board()
     s = State(b)
-    t = MinMaxTree(s,0,None)
+    t = MinMaxTree(s,0,None,True)
 
     start = time.time()
     t.dfs_evaluate(MinMaxTree.SEARCH_DEPTH)
