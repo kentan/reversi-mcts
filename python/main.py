@@ -15,8 +15,8 @@ def setup():
     treenode.Node.total_visits = root.total_visits_for_pickling
 
 def play_game():
-    player1 = player.mcts_player.MCTSPlayer(root)
-    #player1 = player.random_player.RandomPlayer()
+    #player1 = player.mcts_player.MCTSPlayer(root)
+    player1 = player.random_player.RandomPlayer()
     player2 = player.minmax_player.MinMaxPlayer(1)
     b = board.Board()
 
