@@ -51,7 +51,7 @@ def play_game():
 
 def main():
     setup()
-    for i in range(100):
+    for i in range(30):
         play_game()
 
     print(result)

@@ -8,24 +8,12 @@ import time
 class MinMaxPlayer:
     def __init__(self,player_id):
         self.fist = (player_id == 0)
-        self.previous = None
 
     def action(self, board_,opponent_action):
         state_before = State(copy.deepcopy(board_))
-        tree = self.previous
-        if tree is None:
-            tree = MinMaxTree(state_before,0,None,self.fist)
-
-        while tree.best_child is not None:
-            tree = tree.best_child
-
-
-
+        tree = MinMaxTree(state_before,0,None,self.fist)
         tree.dfs_evaluate()
         action = tree.best_action
-        self.previous = tree.best_child
-
-
         return action
 
 
